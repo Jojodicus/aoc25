@@ -1,25 +1,15 @@
-# aoc25
+# Advent of Code 2025
 
-Welcome to the Advent of Code[^aoc] Kotlin project created by [jojodicus][github] using the [Advent of Code Kotlin Template][template] delivered by JetBrains.
+Small collection of solutions, done in Kotlin with Amper.
 
-In this repository, jojodicus is about to provide solutions for the puzzles using [Kotlin][kotlin] language.
+## Running a solution:
 
-If you're stuck with Kotlin-specific questions or anything related to this template, check out the following resources:
+Plop your input into `src/inputs` and name it `Day01.txt` and so on.
+If a day has two different inputs, name the second one `Day01-p2.txt` etc.
 
-- [Kotlin docs][docs]
-- [Kotlin Slack][slack]
-- Template [issue tracker][issues]
+```sh
+./amper run --main-class Day01Kt
+```
 
-
-[^aoc]:
-    [Advent of Code][aoc] – An annual event of Christmas-oriented programming challenges started December 2015.
-    Every year since then, beginning on the first day of December, a programming puzzle is published every day for twenty-five days.
-    You can solve the puzzle and provide an answer using the language of your choice.
-
-[aoc]: https://adventofcode.com
-[docs]: https://kotlinlang.org/docs/home.html
-[github]: https://github.com/jojodicus
-[issues]: https://github.com/kotlin-hands-on/advent-of-code-kotlin-template/issues
-[kotlin]: https://kotlinlang.org
-[slack]: https://surveys.jetbrains.com/s3/kotlin-slack-sign-up
-[template]: https://github.com/kotlin-hands-on/advent-of-code-kotlin-template
+Or if using the IntelliJ IDE, install the Amper plugin,
+then right-click the source file for the specific day and click run.
