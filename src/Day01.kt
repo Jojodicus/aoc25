@@ -1,21 +1,40 @@
+import kotlin.math.abs
+import kotlin.math.sign
+
 fun main() {
+    fun Int.rotate(rotation: String): Int {
+        val clicks = rotation.substring(1).toInt()
+        return this + when (rotation[0]) {
+            'L' -> -clicks
+            'R' -> clicks
+            else -> throw IllegalStateException()
+        }
+    }
+
     fun part1(input: List<String>): Int {
-        return input.size
+        var knob = 50
+        return input.count {
+            knob = Math.floorMod(knob.rotate(it), 100)
+            knob == 0
+        }
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        var knob = 50
+        return input.sumOf {
+            val oldKnobSign = knob.sign
+            knob = knob.rotate(it)
+
+            // count: rounds of 100s (division)
+            // if we had a positive number before, also count hits to zero or the sway into negative zone
+            val passedZero = abs(knob) / 100 + if (oldKnobSign == 1 && knob.sign <= 0) 1 else 0
+
+            knob = Math.floorMod(knob, 100)
+            passedZero
+        }
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    part1(input).printSolution()
+    part2(input).printSolution()
 }

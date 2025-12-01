@@ -13,3 +13,20 @@ If a day has two different inputs, name the second one `Day01-p2.txt` etc.
 
 Or if using the IntelliJ IDE, install the Amper plugin,
 then right-click the source file for the specific day and click run.
+
+## Progress
+
+| Day | Part 1             | Part 2             |
+|-----|--------------------|--------------------|
+| 1   | :white_check_mark: | :white_check_mark: |
+| 2   |                    |                    |
+| 3   |                    |                    |
+| 4   |                    |                    |
+| 5   |                    |                    |
+| 6   |                    |                    |
+| 7   |                    |                    |
+| 8   |                    |                    |
+| 9   |                    |                    |
+| 10  |                    |                    |
+| 11  |                    |                    |
+| 12  |                    |                    |
