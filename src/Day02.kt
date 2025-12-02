@@ -1,9 +1,9 @@
 fun main() {
     fun solve(input: List<String>, countCallback: (Long) -> Boolean): Long {
         val ranges = input[0].split(",").map { range -> range.split("-").map { it.toLong() } }
-        val stream = ranges.flatMap { (min, max) -> min..max }
+        val stream = ranges.flatMap { (min, max) -> min..max }.parallelStream()
         val repeated = stream.filter { countCallback(it) }
-        return repeated.sum()
+        return repeated.reduce(0, Long::plus)
     }
 
     fun part1(input: List<String>): Long {
