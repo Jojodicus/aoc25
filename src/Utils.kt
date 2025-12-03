@@ -1,5 +1,6 @@
 import kotlin.io.path.Path
 import kotlin.io.path.readText
+import kotlin.time.measureTime
 
 /**
  * Reads lines from the given input txt file.
@@ -9,7 +10,12 @@ fun readInput(name: String) = Path("src/inputs/$name.txt").readText().trim().lin
 /**
  * The clean shorthand for printing solutions.
  */
-fun Any?.printSolution() {
-    println("part ${part++}: $this")
+fun printSolution(solver: () -> Long) {
+    val answer: Long
+    val time = measureTime {
+        answer = solver()
+    }
+    println("part ${part++}: $answer")
+    println("took: $time")
 }
 private var part = 1

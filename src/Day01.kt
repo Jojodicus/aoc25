@@ -35,6 +35,6 @@ fun main() {
     }
 
     val input = readInput("Day01")
-    part1(input).printSolution()
-    part2(input).printSolution()
+    printSolution { part1(input).toLong() }
+    printSolution { part2(input).toLong() }
 }
