@@ -21,7 +21,7 @@ then right-click the source file for the specific day and click run.
 | 1   | :white_check_mark: | :white_check_mark: |
 | 2   | :white_check_mark: | :white_check_mark: |
 | 3   | :white_check_mark: | :white_check_mark: |
-| 4   |                    |                    |
+| 4   | :white_check_mark: | :white_check_mark: |
 | 5   |                    |                    |
 | 6   |                    |                    |
 | 7   |                    |                    |
