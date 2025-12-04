@@ -1,55 +1,54 @@
 fun main() {
     // would have been a lot nicer if there was a conv2d function
 
-    fun get2d(list: List<List<Int>>, y: Int, x: Int): Int {
-        return list.getOrNull(y)?.getOrNull(x) ?: 0
-    }
+    data class Coordinate(val x: Int, val y: Int)
 
-    fun cleanup(nums: List<List<Int>>): List<List<Int>> {
-        return nums.withIndex().map { (y, l) ->
-            l.withIndex().map { (x, e) ->
-                when (e) {
-                    0 -> 0
-                    else -> {
-                        val neighbours =
-                            get2d(nums, y - 1, x - 1) + get2d(nums, y - 1, x) + get2d(nums, y - 1, x + 1) +
-                                    get2d(nums, y, x - 1) + 0 + get2d(nums, y, x + 1) +
-                                    get2d(nums, y + 1, x - 1) + get2d(nums, y + 1, x) + get2d(nums, y + 1, x + 1)
+    fun parse(input: List<String>): MutableSet<Coordinate> {
+        val set = mutableSetOf<Coordinate>()
 
-                        if (neighbours < 4) 1 else 0
-                    }
+        input.withIndex().forEach { (y, l) ->
+            l.withIndex().forEach { (x, e) ->
+                if (e == '@') {
+                    set.add(Coordinate(x, y))
                 }
             }
         }
+
+        return set
     }
 
-    fun part1(input: List<String>): Long {
-        val nums = input.map { line ->
-            line.map { (it - '.') / ('@' - '.') }
+    fun Set<Coordinate>.has(x: Int, y: Int) = if (this.contains(Coordinate(x, y))) 1 else 0
+
+    fun cleanup(nums: MutableSet<Coordinate>): Int {
+        val move = mutableSetOf<Coordinate>()
+
+        nums.forEach { (x, y) ->
+            val neighbours = nums.has(x - 1, y - 1) + nums.has(x, y - 1) + nums.has(x + 1, y - 1) +
+                    nums.has(x - 1, y) + nums.has(x + 1, y) +
+                    nums.has(x - 1, y + 1) + nums.has(x, y + 1) + nums.has(x + 1, y + 1)
+            if (neighbours < 4) {
+                move.add(Coordinate(x, y))
+            }
         }
 
-        return cleanup(nums).sumOf { it.sum() }.toLong()
+        move.forEach { nums.remove(it) }
+        return move.size
     }
+
+    fun part1(input: List<String>) = cleanup(parse(input)).toLong()
 
     fun part2(input: List<String>): Long {
-        var nums = input.map { line ->
-            line.map { (it - '.') / ('@' - '.') }
-        }
+        val nums = parse(input)
 
+        var count = 0L
         var clean = cleanup(nums)
-        var cleanups = clean.sumOf { it.sum() }
 
-        while (clean.any { l -> l.any { it == 1}}) {
-            nums = nums.zip(clean).map { l ->
-                l.first.zip(l.second).map {
-                    it.first - it.second
-                }
-            }
+        while (clean > 0) {
+            count += clean
             clean = cleanup(nums)
-            cleanups += clean.sumOf { it.sum() }
         }
 
-        return cleanups.toLong()
+        return count
     }
 
     val input = readInput("Day04")
