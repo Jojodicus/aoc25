@@ -23,16 +23,8 @@ fun main() {
                     var end = strings[1].toLong()
 
                     // normalize
-                    var inRange = isInRange(start, ranges)
-                    while (inRange != null) {
-                        start = inRange.last + 1
-                        inRange = isInRange(start, ranges)
-                    }
-                    inRange = isInRange(end, ranges)
-                    while (inRange != null) {
-                        end = inRange.first - 1
-                        inRange = isInRange(start, ranges)
-                    }
+                    start = isInRange(start, ranges)?.last?.plus(1) ?: start
+                    end = isInRange(end, ranges)?.first?.minus(1) ?: end
 
                     if (start <= end) {
                         // this can still happen:
@@ -43,8 +35,7 @@ fun main() {
                         ranges.removeIf {
                             it.first in newRange
                         }
-
-                        ranges += start..end
+                        ranges += newRange
                     }
                 }
             }
