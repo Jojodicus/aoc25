@@ -1,42 +1,31 @@
 fun main() {
-    fun isInRange(n: Long, ranges: List<LongRange>): LongRange? {
-        ranges.forEach { if (n in it) return@isInRange it }
-        return null
-    }
+    fun isInRange(n: Long, ranges: List<LongRange>) = ranges.find { n in it }
 
     fun parse(input: List<String>): Pair<List<LongRange>, List<Long>> {
         val ranges = mutableListOf<LongRange>()
-        val numbers = mutableListOf<Long>()
 
-        var section = false
-        for (line in input) {
-            if (line == "") {
-                section = true
-                continue
-            }
+        val section1 = input.takeWhile { it != "" }
+        val numbers = input.drop(section1.size + 1).map(String::toLong)
 
-            if (section) {
-                numbers += line.toLong()
-            } else {
-                line.split('-').let { strings ->
-                    var start = strings[0].toLong()
-                    var end = strings[1].toLong()
+        for (line in section1) {
+            line.split('-').let { strings ->
+                var start = strings[0].toLong()
+                var end = strings[1].toLong()
 
-                    // normalize
-                    start = isInRange(start, ranges)?.last?.plus(1) ?: start
-                    end = isInRange(end, ranges)?.first?.minus(1) ?: end
+                // normalize
+                start = isInRange(start, ranges)?.first ?: start
+                end = isInRange(end, ranges)?.last ?: end
 
-                    if (start <= end) {
-                        // this can still happen:
-                        // range:     |----|
-                        // it:    |--------------|
+                if (start <= end) {
+                    // check for
+                    // range:     |----|
+                    // it:    |--------------|
 
-                        val newRange = start..end
-                        ranges.removeIf {
-                            it.first in newRange
-                        }
-                        ranges += newRange
+                    val newRange = start..end
+                    ranges.removeIf {
+                        it.first in newRange
                     }
+                    ranges += newRange
                 }
             }
         }
