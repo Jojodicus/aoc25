@@ -12,7 +12,7 @@ fun readInput(name: String) = Path("src/inputs/$name.txt").readText().trim().lin
  */
 fun printSolution(solver: () -> Long) {
     // precondition
-    (1..10).forEach { _ -> measureTime { solver() } }
+    (1..3).forEach { _ -> measureTime { solver() } }
 
     val answer: Long
     val time = measureTime {
