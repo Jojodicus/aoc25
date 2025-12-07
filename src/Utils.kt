@@ -11,6 +11,9 @@ fun readInput(name: String) = Path("src/inputs/$name.txt").readText().trim().lin
  * The clean shorthand for printing solutions.
  */
 fun printSolution(solver: () -> Long) {
+    // precondition
+    (1..10).forEach { _ -> measureTime { solver() } }
+
     val answer: Long
     val time = measureTime {
         answer = solver()
