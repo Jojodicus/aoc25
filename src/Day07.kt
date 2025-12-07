@@ -9,7 +9,7 @@ fun main() {
 
         input.drop(1).forEach { line ->
             lastTimelines.forEachIndexed { col, timeline ->
-                if (line[col] == '^') {
+                if (timeline > 0 && line[col] == '^') {
                     // split
                     runningTimelines[col - 1] += timeline
                     runningTimelines[col + 1] += timeline
