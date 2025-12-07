@@ -5,7 +5,10 @@ import kotlin.time.measureTime
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = Path("src/inputs/$name.txt").readText().trim().lines()
+fun readInput(name: String): List<String> {
+    println(name)
+    return Path("src/inputs/$name.txt").readText().trim().lines()
+}
 
 /**
  * The clean shorthand for printing solutions.
