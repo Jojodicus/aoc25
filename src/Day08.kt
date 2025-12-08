@@ -15,24 +15,18 @@ fun main() {
         override fun compareTo(other: Connection) = this.distance.compareTo(other.distance)
     }
 
-    fun parse(input: List<String>): List<Box> {
-        return input.map { line ->
-            val (x, y, z) = line.split(",").map(String::toLong)
-            Box(x, y, z)
-        }
+    fun parse(input: List<String>) = input.map { line ->
+        val (x, y, z) = line.split(",").map(String::toLong)
+        Box(x, y, z)
     }
 
-    fun allConnectionsSorted(boxes: List<Box>): Queue<Connection> {
-        val connectionQueue = PriorityQueue<Connection>()
-
-        boxes.forEachIndexed { i, box1 ->
-            boxes.drop(i + 1).forEach { box2 ->
-                connectionQueue += Connection(box1, box2)
+    fun allConnectionsSorted(boxes: List<Box>) = PriorityQueue(
+        boxes.flatMapIndexed { i, box1 ->
+            boxes.drop(i + 1).map { box2 ->
+                Connection(box1, box2)
             }
         }
-
-        return connectionQueue
-    }
+    )
 
     fun solve(input: List<String>, part: Int, steps: Int = 1000): Long {
         val boxes = parse(input)
