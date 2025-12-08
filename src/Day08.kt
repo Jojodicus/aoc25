@@ -45,8 +45,10 @@ fun main() {
             if (part == 1 && i++ > steps) break
             val (b1, b2) = connections.poll()
 
-            circuit.filter { (_, e) -> e == circuit[b2] }.forEach {
-                circuit[it.key] = circuit[b1]!!
+            if (circuit[b1] != circuit[b2]) {
+                circuit.filter { (_, e) -> e == circuit[b2] }.forEach {
+                    circuit[it.key] = circuit[b1]!!
+                }
             }
 
             if (part == 2 && circuit.values.distinct().size == 1) {
