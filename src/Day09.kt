@@ -6,16 +6,18 @@ import kotlin.math.min
 fun main() {
     data class CommunistTile(val x: Long, val y: Long)
 
+    fun parse(input: List<String>) = input.map {
+        val (x, y) = it.split(",").map(String::toLong)
+        CommunistTile(x, y)
+    }
+
     fun part1(input: List<String>): Long {
-        val tiles = input.map {
-            val (x, y) = it.split(",").map(String::toLong)
-            CommunistTile(x, y)
-        }
+        val tiles = parse(input)
 
         var maxArea = 0L
 
-        tiles.forEach { tile1 ->
-            tiles.forEach { tile2 ->
+        tiles.forEachIndexed { i, tile1 ->
+            tiles.drop(i + 1).forEach { tile2 ->
                 val area = (abs(tile1.x - tile2.x) + 1) * (abs(tile1.y - tile2.y) + 1)
                 maxArea = max(maxArea, area)
             }
@@ -25,10 +27,7 @@ fun main() {
     }
 
     fun part2(input: List<String>): Long {
-        val tiles = input.map {
-            val (x, y) = it.split(",").map(String::toLong)
-            CommunistTile(x, y)
-        }
+        val tiles = parse(input)
 
         val xMap = tiles.asSequence().map { it.x }.distinct().sorted().withIndex().associate { (i, x) -> x to i }
         val yMap = tiles.asSequence().map { it.y }.distinct().sorted().withIndex().associate { (i, y) -> y to i }
@@ -77,8 +76,9 @@ fun main() {
 
         var maxArea = 0L
 
-        tiles.forEach { tile1 ->
-            tiles.forEach inner@{ tile2 ->
+        tiles.forEachIndexed { i, tile1 ->
+            tiles.drop(i + 1).forEach inner@{ tile2 ->
+                // optimization idea: check borders first
                 for (y in min(yMap[tile1.y]!!, yMap[tile2.y]!!)..max(yMap[tile1.y]!!, yMap[tile2.y]!!)) {
                     for (x in min(xMap[tile1.x]!!, xMap[tile2.x]!!)..max(xMap[tile1.x]!!, xMap[tile2.x]!!)) {
                         if (grid[y][x] == '.') return@inner
