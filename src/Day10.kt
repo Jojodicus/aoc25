@@ -101,9 +101,6 @@ fun main() {
 
     fun part2(input: List<String>) = parse(input).sumOf { configureFewestJoltage(it) }
 
-    println(part1(readInput("Day10-test")))
-    println(part2(readInput("Day10-test")))
-
     val input = readInput("Day10")
     printSolution { part1(input) }
     printSolution(precondition = false) { part2(input) }
