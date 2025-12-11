@@ -1,3 +1,6 @@
+import org.chocosolver.solver.Model
+import org.chocosolver.solver.variables.IntVar
+
 fun main() {
     data class Machine(val lights: List<Boolean>, val buttons: List<List<Int>>, val joltage: List<Int>)
 
@@ -46,15 +49,52 @@ fun main() {
     }
 
     fun configureFewestJoltage(machine: Machine): Long {
-        // example 1:
-        //     (3)  (1,3)  (2)  (2,3) (0,2) (0,1)
-        // 3 =                         #b4 + #b5
-        // 5 =       #b1 +                   #b5
-        // 4 =             #b2 + #b3 + #b4
-        // 7 = #b0 + #b1 +       #b3
-        // min(sum(#bX))
+        val model = Model()
 
-        return 0
+        val maxPerButton = machine.buttons.map { b ->
+            b.minOfOrNull { pos -> machine.joltage[pos] } ?: 0
+        }
+
+        val xs = machine.buttons.indices.map { i ->
+            model.intVar(0, maxPerButton[i])
+        }
+
+        machine.joltage.indices.forEach { pos ->
+            val contributing = mutableListOf<IntVar>()
+            val coeffs = mutableListOf<Int>()
+            machine.buttons.forEachIndexed { i, b ->
+                if (pos in b) {
+                    contributing += xs[i]
+                    coeffs += 1
+                }
+            }
+            if (contributing.isEmpty()) {
+                require(machine.joltage[pos] == 0)
+            } else {
+                model.scalar(contributing.toTypedArray(), coeffs.toIntArray(), "=", machine.joltage[pos]).post()
+            }
+        }
+
+        val sumVar = model.intVar(0, machine.joltage.sum())
+        model.sum(xs.toTypedArray(), "=", sumVar).post()
+
+        var bestSum = Long.MAX_VALUE
+
+        val solver = model.solver
+        while (solver.solve()) {
+            val s = sumVar.value.toLong()
+            if (s < bestSum) {
+                bestSum = s
+                model.arithm(sumVar, "<", bestSum.toInt()).post()
+            }
+        }
+
+        if (bestSum == Long.MAX_VALUE) {
+            throw IllegalStateException("Impossible")
+        }
+
+        println("$bestSum - $machine")
+        return bestSum
     }
 
     fun part1(input: List<String>) = parse(input).sumOf { configureFewestLights(it) }
@@ -66,5 +106,5 @@ fun main() {
 
     val input = readInput("Day10")
     printSolution { part1(input) }
-//    printSolution { part2(input) }
+    printSolution(precondition = false) { part2(input) }
 }

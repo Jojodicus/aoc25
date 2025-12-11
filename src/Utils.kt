@@ -13,9 +13,9 @@ fun readInput(name: String): List<String> {
 /**
  * The clean shorthand for printing solutions.
  */
-fun printSolution(solver: () -> Long) {
+fun printSolution(precondition: Boolean = true, solver: () -> Long) {
     // precondition
-    (1..3).forEach { _ -> measureTime { solver() } }
+    if (precondition) (1..3).forEach { _ -> measureTime { solver() } }
 
     val answer: Long
     val time = measureTime {
